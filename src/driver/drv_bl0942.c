@@ -133,7 +133,6 @@ static int UART_TryToGetNextPacket(void) {
     power = (UART_GetNextByte(12) << 24) | (UART_GetNextByte(11) << 16) |
             (UART_GetNextByte(10) << 8);
     power = (power >> 8);
-
     frequency = (UART_GetNextByte(17) << 8) | UART_GetNextByte(16);
 
     ScaleAndUpdate(voltage, current, power, frequency);
@@ -147,7 +146,7 @@ static int UART_TryToGetNextPacket(void) {
 	}
 #endif
 
-	UART_ConsumeBytes(BL0942_UART_PACKET_LEN);
+    UART_ConsumeBytes(BL0942_UART_PACKET_LEN);
 	return BL0942_UART_PACKET_LEN;
 }
 
