@@ -868,18 +868,36 @@ typedef struct pinsState_s {
 
 #else
 
+#if PLATFORM_W800
+
 typedef struct pinsState_s {
-	// All above values are indexed by physical pin index
-	// (so we assume we have maximum of 32 pins)
-	byte roles[CHANNEL_MAX];
-	byte channels[CHANNEL_MAX];
-	// extra channels array - this is needed for
-	// buttons, so button can toggle one relay on single click
-	// and other relay on double click
-	byte channels2[CHANNEL_MAX];
-	// This single field above, is indexed by CHANNEL INDEX
-	// (not by pin index)
-	byte channelTypes[CHANNEL_MAX];
+    // All above values are indexed by physical pin index
+    // (so we assume we have maximum of 32 pins)
+    byte roles[CHANNEL_MAX];
+    byte channels[CHANNEL_MAX];
+    // extra channels array - this is needed for
+    // buttons, so button can toggle one relay on single click
+    // and other relay on double click
+    byte channels2[CHANNEL_MAX];
+    // This single field above, is indexed by CHANNEL INDEX
+    // (not by pin index)
+    byte channelTypes[CHANNEL_MAX];
+} pinsState_t;
+
+#else
+
+typedef struct pinsState_s {
+    // All above values are indexed by physical pin index
+    // (so we assume we have maximum of 32 pins)
+    byte roles[32];
+    byte channels[32];
+    // extra channels array - this is needed for
+    // buttons, so button can toggle one relay on single click
+    // and other relay on double click
+    byte channels2[32];
+    // This single field above, is indexed by CHANNEL INDEX
+    // (not by pin index)
+    byte channelTypes[CHANNEL_MAX];
 } pinsState_t;
 
 #endif
