@@ -63,7 +63,7 @@ typedef struct pinButton_ {
 	uint8_t  debounce_cnt; // make a full byte, so we can count ms
 
 	uint8_t(*hal_button_Level)(void* self);
-}pinButton_s;
+} pinButton_s;
 
 // overall pins enable.
 // if zero, all hardware action is disabled.
@@ -91,7 +91,7 @@ static byte g_lastValidState[PLATFORM_GPIO_MAX];
  *              gpio_edge_map is hex and every bits is map to gpio0-gpio31.
  *              0:rising,1:falling.
  */
- // these map directly to void bk_enter_deep_sleep(uint32_t gpio_index_map,uint32_t gpio_edge_map);
+// these map directly to void bk_enter_deep_sleep(uint32_t gpio_index_map,uint32_t gpio_edge_map);
 uint32_t g_gpio_index_map[2] = { 0, 0 };
 uint32_t g_gpio_edge_map[2] = { 0, 0 }; // note: 0->rising, 1->falling
 
@@ -122,6 +122,7 @@ void setGPIActive(int index, int active, int falling) {
 			g_gpio_edge_map[0] &= ~(1 << index);
 	}
 }
+
 void PINS_BeginDeepSleepWithPinWakeUp() {
 	int i;
 	int value;
@@ -171,11 +172,11 @@ void PINS_BeginDeepSleepWithPinWakeUp() {
 #else
 	bk_enter_deep_sleep(g_gpio_index_map[0], g_gpio_edge_map[0]);
 #endif
+
 #else
 
 #endif
 }
-
 
 #ifdef PLATFORM_BEKEN
 #ifdef BEKEN_PIN_GPI_INTERRUPTS
@@ -238,8 +239,8 @@ void PIN_SetupPins() {
 #endif
 #endif
 #if defined(PLATFORM_BEKEN) || defined(PLATFORM_BL602) || defined(PLATFORM_W600) || defined(WINDOWS)
-	// TODO: better place to call?
-	DHT_OnPinsConfigChanged();
+    // TODO: better place to call?
+    DHT_OnPinsConfigChanged();
 #endif
 	addLogAdv(LOG_INFO, LOG_FEATURE_GENERAL, "PIN_SetupPins pins have been set up.\r\n");
 }
@@ -281,7 +282,7 @@ int PIN_CountPinsWithRole(int role) {
 	return r;
 }
 int PIN_FindPinIndexForRole(int role, int defaultIndexToReturnIfNotFound) {
-	int i;
+    int i;
 
 	for (i = 0; i < PLATFORM_GPIO_MAX; i++) {
 		if (g_cfg.pins.roles[i] == role)
@@ -429,9 +430,9 @@ void Button_OnTripleClick(int index)
 }
 void Button_OnQuadrupleClick(int index)
 {
-	addLogAdv(LOG_INFO, LOG_FEATURE_GENERAL, "%i key_quadruple_press\r\n", index);
-	// fire event - button on pin <index> was 4clicked
-	EventHandlers_FireEvent(CMD_EVENT_PIN_ON4CLICK, index);
+    addLogAdv(LOG_INFO, LOG_FEATURE_GENERAL, "%i key_quadruple_press\r\n", index);
+    // fire event - button on pin <index> was 4clicked
+    EventHandlers_FireEvent(CMD_EVENT_PIN_ON4CLICK, index);
 }
 void Button_On5xClick(int index)
 {
@@ -477,7 +478,7 @@ bool BTN_ShouldInvert(int index) {
 	return false;
 }
 static uint8_t PIN_ReadDigitalInputValue_WithInversionIncluded(int index) {
-	uint8_t iVal = HAL_PIN_ReadDigitalInput(index);
+    uint8_t iVal = HAL_PIN_ReadDigitalInput(index);
 
 	// support inverted button
 	if (BTN_ShouldInvert(index)) {
@@ -485,12 +486,13 @@ static uint8_t PIN_ReadDigitalInputValue_WithInversionIncluded(int index) {
 	}
 	return iVal;
 }
+
 static uint8_t button_generic_get_gpio_value(void* param)
 {
-	int index;
-	index = ((pinButton_s*)param) - g_buttons;
+    int index;
+    index = ((pinButton_s*)param) - g_buttons;
 
-	return PIN_ReadDigitalInputValue_WithInversionIncluded(index);
+    return PIN_ReadDigitalInputValue_WithInversionIncluded(index);
 }
 #define PIN_UART1_RXD 10
 #define PIN_UART1_TXD 11
@@ -499,21 +501,21 @@ static uint8_t button_generic_get_gpio_value(void* param)
 
 void NEW_button_init(pinButton_s* handle, uint8_t(*pin_level)(void* self), uint8_t active_level)
 {
-	memset(handle, sizeof(pinButton_s), 0);
+    memset(handle, sizeof(pinButton_s), 0);
 
-	handle->event = (uint8_t)BTN_NONE_PRESS;
-	handle->hal_button_Level = pin_level;
-	handle->button_level = handle->hal_button_Level(handle);
-	handle->active_level = active_level;
+    handle->event = (uint8_t)BTN_NONE_PRESS;
+    handle->hal_button_Level = pin_level;
+    handle->button_level = handle->hal_button_Level(handle);
+    handle->active_level = active_level;
 }
 void CHANNEL_SetAllChannelsByType(int requiredType, int newVal) {
-	int i;
+    int i;
 
-	for (i = 0; i < CHANNEL_MAX; i++) {
-		if (CHANNEL_GetType(i) == requiredType) {
-			CHANNEL_Set(i, newVal, 0);
-		}
-	}
+    for (i = 0; i < CHANNEL_MAX; i++) {
+        if (CHANNEL_GetType(i) == requiredType) {
+            CHANNEL_Set(i, newVal, 0);
+        }
+    }
 }
 
 void CHANNEL_SetAll(int iVal, int iFlags) {
@@ -557,13 +559,13 @@ void CHANNEL_SetAll(int iVal, int iFlags) {
 			CHANNEL_Set(g_cfg.pins.channels[i], iVal, iFlags);
 			break;
 
-		default:
-			break;
-		}
-	}
+        default:
+            break;
+        }
+    }
 }
 void CHANNEL_SetStateOnly(int iVal) {
-	int i;
+    int i;
 
 	if (iVal == 0) {
 		CHANNEL_SetAll(0, true);
@@ -579,9 +581,8 @@ void CHANNEL_SetStateOnly(int iVal) {
 		}
 	}
 	CHANNEL_SetAll(iVal, true);
-
-
 }
+
 void CHANNEL_DoSpecialToggleAll() {
 	int anyEnabled, i;
 
@@ -886,14 +887,14 @@ void PIN_SetPinRoleForPinIndex(int index, int role) {
 
 	if (bDHTChange) {
 #if defined(PLATFORM_BEKEN) || defined(PLATFORM_BL602) || defined(PLATFORM_W600) || defined(WINDOWS)
-		// TODO: better place to call?
-		DHT_OnPinsConfigChanged();
+        // TODO: better place to call?
+        DHT_OnPinsConfigChanged();
 #endif
-	}
+    }
 }
 
 void PIN_SetGenericDoubleClickCallback(void (*cb)(int pinIndex)) {
-	g_doubleClickCallback = cb;
+    g_doubleClickCallback = cb;
 }
 void Channel_SaveInFlashIfNeeded(int ch) {
 	// save, if marked as save value in flash (-1)
@@ -910,10 +911,10 @@ static void Channel_OnChanged(int ch, int prevValue, int iFlags) {
 	int iVal;
 	int bOn;
 
-	//bOn = BIT_CHECK(g_channelStates,ch);
-	iVal = g_channelValues[ch];
-	g_channelValuesFloats[ch] = (float)iVal;
-	bOn = iVal > 0;
+    //bOn = BIT_CHECK(g_channelStates,ch);
+    iVal = g_channelValues[ch];
+    g_channelValuesFloats[ch] = (float)iVal;
+    bOn = iVal > 0;
 
 #if ENABLE_I2C
 	I2C_OnChannelChanged(ch, iVal);
@@ -924,7 +925,7 @@ static void Channel_OnChanged(int ch, int prevValue, int iFlags) {
 #endif
 
 #if ENABLE_DRIVER_TUYAMCU
-	TuyaMCU_OnChannelChanged(ch, iVal);
+    TuyaMCU_OnChannelChanged(ch, iVal);
 #endif
 
 	for (i = 0; i < PLATFORM_GPIO_MAX; i++) {
@@ -1004,11 +1005,11 @@ float CHANNEL_GetFinalValue(int channel) {
 	return dVal;
 }
 float CHANNEL_GetFloat(int ch) {
-	if (ch < 0 || ch >= CHANNEL_MAX) {
-		addLogAdv(LOG_ERROR, LOG_FEATURE_GENERAL, "CHANNEL_Get: Channel index %i is out of range <0,%i)\n\r", ch, CHANNEL_MAX);
-		return 0;
-	}
-	return g_channelValuesFloats[ch];
+    if (ch < 0 || ch >= CHANNEL_MAX) {
+        addLogAdv(LOG_ERROR, LOG_FEATURE_GENERAL, "CHANNEL_Get: Channel index %i is out of range <0,%i)\n\r", ch, CHANNEL_MAX);
+        return 0;
+    }
+    return g_channelValuesFloats[ch];
 }
 int CHANNEL_Get(int ch) {
 	// special channels
@@ -1034,29 +1035,29 @@ int CHANNEL_Get(int ch) {
 	return g_channelValues[ch];
 }
 void CHANNEL_ClearAllChannels() {
-	int i;
+    int i;
 
-	for (i = 0; i < CHANNEL_MAX; i++) {
-		CHANNEL_Set(i, 0, CHANNEL_SET_FLAG_SILENT);
-	}
+    for (i = 0; i < CHANNEL_MAX; i++) {
+        CHANNEL_Set(i, 0, CHANNEL_SET_FLAG_SILENT);
+    }
 }
 
 void CHANNEL_Set_FloatPWM(int ch, float fVal, int iFlags) {
-	int i;
+    int i;
 
-	g_channelValues[ch] = (int)fVal;
-	g_channelValuesFloats[ch] = fVal;
+    g_channelValues[ch] = (int)fVal;
+    g_channelValuesFloats[ch] = fVal;
 
-	for (i = 0; i < PLATFORM_GPIO_MAX; i++) {
-		if (g_cfg.pins.channels[i] == ch) {
-			if (g_cfg.pins.roles[i] == IOR_PWM) {
-				HAL_PIN_PWM_Update(i, fVal);
-			}
-			else if (g_cfg.pins.roles[i] == IOR_PWM_n) {
-				HAL_PIN_PWM_Update(i, 100.0f - fVal);
-			}
-		}
-	}
+    for (i = 0; i < PLATFORM_GPIO_MAX; i++) {
+        if (g_cfg.pins.channels[i] == ch) {
+            if (g_cfg.pins.roles[i] == IOR_PWM) {
+                HAL_PIN_PWM_Update(i, fVal);
+            }
+            else if (g_cfg.pins.roles[i] == IOR_PWM_n) {
+                HAL_PIN_PWM_Update(i, 100.0f - fVal);
+            }
+        }
+    }
 }
 void CHANNEL_Set(int ch, int iVal, int iFlags) {
 	int prevValue;
@@ -1538,13 +1539,13 @@ static int activepoll_time = 0; // time to keep polling active until
 //  background ticks, timer repeat invoking interval defined by PIN_TMR_DURATION.
 void PIN_ticks(void* param)
 {
-	int i;
-	int value;
+    int i;
+    int value;
 
 #if defined(PLATFORM_BEKEN) || defined(WINDOWS)
-	g_time = rtos_get_time();
+    g_time = rtos_get_time();
 #else
-	g_time += PIN_TMR_DURATION;
+    g_time += PIN_TMR_DURATION;
 #endif
 	uint32_t t_diff = g_time - g_last_time;
 	// cope with wrap
@@ -1817,10 +1818,9 @@ static commandResult_t CMD_setButtonHoldRepeat(const void* context, const char* 
 		return CMD_RES_NOT_ENOUGH_ARGUMENTS;
 	}
 
+    CFG_SetButtonRepeatPressTime(Tokenizer_GetArgInteger(0));
 
-	CFG_SetButtonRepeatPressTime(Tokenizer_GetArgInteger(0));
-
-	CFG_Save_IfThereArePendingChanges();
+    CFG_Save_IfThereArePendingChanges();
 
 	addLogAdv(LOG_INFO, LOG_FEATURE_GENERAL, "Times set, %i. Config autosaved to flash.",
 		g_cfg.buttonHoldRepeat
@@ -1842,13 +1842,13 @@ static commandResult_t CMD_SetButtonTimes(const void* context, const char* cmd, 
 		return CMD_RES_NOT_ENOUGH_ARGUMENTS;
 	}
 
-	CFG_SetButtonLongPressTime(Tokenizer_GetArgInteger(0));
+    CFG_SetButtonLongPressTime(Tokenizer_GetArgInteger(0));
 
-	CFG_SetButtonShortPressTime(Tokenizer_GetArgInteger(1));
+    CFG_SetButtonShortPressTime(Tokenizer_GetArgInteger(1));
 
-	CFG_SetButtonRepeatPressTime(Tokenizer_GetArgInteger(2));
+    CFG_SetButtonRepeatPressTime(Tokenizer_GetArgInteger(2));
 
-	CFG_Save_IfThereArePendingChanges();
+    CFG_Save_IfThereArePendingChanges();
 
 	addLogAdv(LOG_INFO, LOG_FEATURE_GENERAL, "Times set, %i %i %i. Config autosaved to flash.",
 		g_cfg.buttonLongPress, g_cfg.buttonShortPress, g_cfg.buttonHoldRepeat
@@ -1866,7 +1866,7 @@ static commandResult_t CMD_ShowChannelValues(const void* context, const char* cm
 		}
 	}
 
-	return CMD_RES_OK;
+    return CMD_RES_OK;
 }
 static commandResult_t CMD_SetChannelType(const void* context, const char* cmd, const char* args, int cmdFlags) {
 	int channel;
@@ -2016,10 +2016,10 @@ static commandResult_t showgpi(const void* context, const char* cmd, const char*
 	int i;
 	unsigned int value[2] = { 0, 0 };
 
-	for (i = 0; i < PLATFORM_GPIO_MAX; i++) {
-		int val = 0;
+    for (i = 0; i < PLATFORM_GPIO_MAX; i++) {
+        int val = 0;
 
-		val = HAL_PIN_ReadDigitalInput(i);
+        val = HAL_PIN_ReadDigitalInput(i);
 
 		if (i >= 32)
 			value[1] |= ((val & 1) << (i - 32));
@@ -2032,30 +2032,31 @@ static commandResult_t showgpi(const void* context, const char* cmd, const char*
 
 void PIN_AddCommands(void)
 {
-	//cmddetail:{"name":"showgpi","args":"NULL",
-	//cmddetail:"descr":"log stat of all GPIs",
-	//cmddetail:"fn":"showgpi","file":"new_pins.c","requires":"",
-	//cmddetail:"examples":""}
-	CMD_RegisterCommand("showgpi", showgpi, NULL);
-	//cmddetail:{"name":"setChannelType","args":"[ChannelIndex][TypeString]",
-	//cmddetail:"descr":"Sets a custom type for channel. Types are mostly used to determine how to display channel value on GUI",
-	//cmddetail:"fn":"CMD_SetChannelType","file":"new_pins.c","requires":"",
-	//cmddetail:"examples":""}
-	CMD_RegisterCommand("setChannelType", CMD_SetChannelType, NULL);
-	//cmddetail:{"name":"showChannelValues","args":"",
-	//cmddetail:"descr":"log channel values",
-	//cmddetail:"fn":"CMD_ShowChannelValues","file":"new_pins.c","requires":"",
-	//cmddetail:"examples":""}
-	CMD_RegisterCommand("showChannelValues", CMD_ShowChannelValues, NULL);
-	//cmddetail:{"name":"setButtonTimes","args":"[ValLongPress][ValShortPress][ValRepeat]",
-	//cmddetail:"descr":"Each value is times 100ms, so: SetButtonTimes 2 1 1 means 200ms long press, 100ms short and 100ms repeat",
-	//cmddetail:"fn":"CMD_SetButtonTimes","file":"new_pins.c","requires":"",
-	//cmddetail:"examples":""}
-	CMD_RegisterCommand("setButtonTimes", CMD_SetButtonTimes, NULL);
-	//cmddetail:{"name":"setButtonHoldRepeat","args":"[Value]",
-	//cmddetail:"descr":"Sets just the hold button repeat time, given value is times 100ms, so write 1 for 100ms, 2 for 200ms, etc",
-	//cmddetail:"fn":"CMD_setButtonHoldRepeat","file":"new_pins.c","requires":"",
-	//cmddetail:"examples":""}
-	CMD_RegisterCommand("setButtonHoldRepeat", CMD_setButtonHoldRepeat, NULL);
+    //cmddetail:{"name":"showgpi","args":"NULL",
+    //cmddetail:"descr":"log stat of all GPIs",
+    //cmddetail:"fn":"showgpi","file":"new_pins.c","requires":"",
+    //cmddetail:"examples":""}
+    CMD_RegisterCommand("showgpi", showgpi, NULL);
+    //cmddetail:{"name":"setChannelType","args":"[ChannelIndex][TypeString]",
+    //cmddetail:"descr":"Sets a custom type for channel. Types are mostly used to determine how to display channel value on GUI",
+    //cmddetail:"fn":"CMD_SetChannelType","file":"new_pins.c","requires":"",
+    //cmddetail:"examples":""}
+    CMD_RegisterCommand("setChannelType", CMD_SetChannelType, NULL);
+    //cmddetail:{"name":"showChannelValues","args":"",
+    //cmddetail:"descr":"log channel values",
+    //cmddetail:"fn":"CMD_ShowChannelValues","file":"new_pins.c","requires":"",
+    //cmddetail:"examples":""}
+    CMD_RegisterCommand("showChannelValues", CMD_ShowChannelValues, NULL);
+    //cmddetail:{"name":"setButtonTimes","args":"[ValLongPress][ValShortPress][ValRepeat]",
+    //cmddetail:"descr":"Each value is times 100ms, so: SetButtonTimes 2 1 1 means 200ms long press, 100ms short and 100ms repeat",
+    //cmddetail:"fn":"CMD_SetButtonTimes","file":"new_pins.c","requires":"",
+    //cmddetail:"examples":""}
+    CMD_RegisterCommand("setButtonTimes", CMD_SetButtonTimes, NULL);
+    //cmddetail:{"name":"setButtonHoldRepeat","args":"[Value]",
+    //cmddetail:"descr":"Sets just the hold button repeat time, given value is times 100ms, so write 1 for 100ms, 2 for 200ms, etc",
+    //cmddetail:"fn":"CMD_setButtonHoldRepeat","file":"new_pins.c","requires":"",
+    //cmddetail:"examples":""}
+    CMD_RegisterCommand("setButtonHoldRepeat", CMD_setButtonHoldRepeat, NULL);
 
 }
+
