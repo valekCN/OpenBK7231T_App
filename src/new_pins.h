@@ -1187,4 +1187,5 @@ const char* PIN_RoleToString(int role);
 
 extern const char* g_channelTypeNames[];
 
-#endif
+#endif /* __NEW_PINS_H__ */
+
