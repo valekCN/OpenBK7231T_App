@@ -13,6 +13,7 @@
 #include "../ota/ota.h"
 
 #include "drv_ntp.h"
+#include "drv_ntp_events.h"
 
 #define LOG_FEATURE LOG_FEATURE_NTP
 

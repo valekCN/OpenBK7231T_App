@@ -58,7 +58,7 @@ uintptr_t HAL_TCP_Establish(const char *host, uint16_t port)
     if (0 == rc){
         ADDLOG_ERROR(LOG_FEATURE_HTTP_CLIENT,"fail to establish tcp");
     } else {
-        ADDLOG_ERROR(LOG_FEATURE_HTTP_CLIENT,"success to establish tcp, fd=%d", rc);
+        ADDLOG_INFO(LOG_FEATURE_HTTP_CLIENT,"success to establish tcp, fd=%d", rc);
     }
     freeaddrinfo(addrInfoList);
 
