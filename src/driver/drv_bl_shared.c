@@ -339,6 +339,7 @@ commandResult_t BL09XX_SetupEnergyStatistic(const void *context, const char *cmd
             energyCounterMinutes = (float*)os_malloc(sample_count*sizeof(float));
             if (energyCounterMinutes != NULL)
             {
+                energyCounterSampleCount = sample_count;
                 memset(energyCounterMinutes, 0, energyCounterSampleCount*sizeof(float));
             }
         }

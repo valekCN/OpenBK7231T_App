@@ -43,6 +43,8 @@
 #include <mcu_ps.h>
 #include <fake_clock_pub.h>
 void bg_register_irda_check_func(FUNCPTR func);
+void bk_wdg_reload( void );
+OSStatus bk_wdg_initialize( uint32_t timeout );
 #endif
 
 int g_secondsElapsed = 0;

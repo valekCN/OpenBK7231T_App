@@ -60,7 +60,7 @@ static commandResult_t CMD_SetChannelLabel(const void *context, const char *cmd,
 	ch = Tokenizer_GetArgInteger(0);
 	s = Tokenizer_GetArg(1);
 	if (Tokenizer_GetArgsCount() > 2) {
-		bHideTogglePrefix = Tokenizer_GetArg(2);
+		bHideTogglePrefix = Tokenizer_GetArgInteger(2);
 	}
 
 	CHANNEL_SetLabel(ch, s, bHideTogglePrefix);
