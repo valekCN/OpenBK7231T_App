@@ -1005,8 +1005,9 @@ int JSON_ProcessCommandReply(const char* cmd, const char* arg, void* request, js
 		printer(request, "}");
 	}
 	else if (!wal_strnicmp(cmd, "Flags", 5)) {
+        long flags = g_cfg.genericFlags;
 		printer(request, "{");
-		printer(request, "\"Flags\":\"%ld\"", *((long int*)&g_cfg.genericFlags));
+		printer(request, "\"Flags\":\"%li\"", flags);
 		printer(request, "}");
 	}
 	else if (!wal_strnicmp(cmd, "Ch", 2)) {

@@ -205,7 +205,7 @@ static commandResult_t CMD_SPITestFlash_WriteStr(const void* context, const char
 		}
 	}
 
-	spi_test_write(addr, str, strlen(str));
+	spi_test_write(addr, (byte*)str, strlen(str));
 
 	return CMD_RES_OK;
 }

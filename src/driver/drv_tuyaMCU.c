@@ -776,7 +776,6 @@ void TuyaMCU_ForcePublishChannelValues() {
 		MQTT_ChannelPublish(cur->channel, 0);
 		cur = cur->next;
 	}
-	return 0;
 }
 // ntp_timeZoneOfs 2
 // addRepeatingEvent 10 -1 uartSendHex 55AA0008000007
