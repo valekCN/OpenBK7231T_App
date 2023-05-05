@@ -378,7 +378,6 @@ int UART_InitUART(int baud) {
 	return g_uart_init_counter;
 }
 void UART_DebugTool_Run() {
-	int totalSize;
 	byte b;
 	char tmp[128];
 	char *p = tmp;

@@ -199,7 +199,7 @@ enum TuyaMCUV0State {
 };
 static byte g_tuyaBatteryPoweredState = 0;
 static byte g_hello[] = { 0x55, 0xAA, 0x00, 0x01, 0x00, 0x00, 0x00 };
-static byte g_request_state[] = { 0x55, 0xAA, 0x00, 0x02, 0x00, 0x01, 0x04, 0x06 };
+//static byte g_request_state[] = { 0x55, 0xAA, 0x00, 0x02, 0x00, 0x01, 0x04, 0x06 };
 
 tuyaMCUMapping_t* TuyaMCU_FindDefForID(int fnId) {
 	tuyaMCUMapping_t* cur;
@@ -638,7 +638,7 @@ commandResult_t TuyaMCU_LinkTuyaMCUOutputToChannel(const void* context, const ch
 		}
 	}
 	if (argsCount < 2) {
-		channelID = -999;
+		channelID = 255;
 	}
 	else {
 		channelID = Tokenizer_GetArgInteger(2);
@@ -1183,7 +1183,6 @@ void TuyaMCU_V0_SendDPCacheReply() {
 	byte dat = 0x00;
 	TuyaMCU_SendCommandWithData(0x10, &dat, 1);
 #else
-	int i;
 	int dataLen;
 	int value;
 	int writtenCount;

@@ -352,7 +352,7 @@ HassDeviceInfo* hass_init_binary_sensor_device_info(int index, bool bInverse) {
 		payload_off = "1";
 		payload_on = "0";
 	}
-	HassDeviceInfo* info = hass_init_device_info(BINARY_SENSOR, index, payload_on, payload_off);
+	HassDeviceInfo* info = hass_init_device_info(BINARY_SENSOR, index, (char*)payload_on, (char*)payload_off);
 
 	sprintf(g_hassBuffer, "~/%i/get", index);
 	cJSON_AddStringToObject(info->root, "stat_t", g_hassBuffer);   //state_topic
@@ -452,7 +452,6 @@ HassDeviceInfo* hass_init_light_singleColor_onChannels(int toggle, int dimmer, i
 /// @param channel
 /// @return 
 HassDeviceInfo* hass_init_sensor_device_info(ENTITY_TYPE type, int channel, int decPlaces, int decOffset) {
-	int i;
 
 	//Assuming that there is only one DHT setup per device which keeps uniqueid/names simpler
 	HassDeviceInfo* info = hass_init_device_info(type, channel, NULL, NULL);	//using channel as index to generate uniqueId

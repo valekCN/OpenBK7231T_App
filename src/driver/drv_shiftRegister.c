@@ -85,7 +85,7 @@ void Shift_OnEverySecond() {
 #endif
 }
 void Shift_OnChannelChanged(int ch, int value) {
-	int totalChannelsMapped = g_totalRegisters * 8;
+	//int totalChannelsMapped = g_totalRegisters * 8;
 
 	ch -= g_firstChannel;
 	if (ch < 0) {
